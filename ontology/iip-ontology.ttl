@@ -1,0 +1,449 @@
+@prefix : <http://purl.org/iot/ontology/iot-stream#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sieont: <http://www.siemens.com/iip/ontology/> .
+@prefix sieinst: <http://www.siemens.com/iip/instance/> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix schem: <http://schema.org/> .
+
+@base <http://www.siemens.com/iip/ontology/> .
+
+<http://www.siemens.com/iip/ontology> rdf:type owl:Ontology ;
+                                            owl:versionIRI <http://www.siemens.com/iip/ontology/v1.0> ;
+                                            <http://purl.org/dc/elements/1.1/Date> "2023-09-30"@en ;
+                                            <http://purl.org/dc/elements/1.1/Title> "IIP-Stream: A Lightweight Ontology for describing a 3D Printer"@en ;
+                                            <http://purl.org/dc/elements/1.1/creator> "Patrick Schneider"@en ,
+                                                                                      "Cenk Eralp"@en ;
+                                            <http://purl.org/dc/elements/1.1/description> "IIP-Stream is a lightweight extension of SOSA ontology and adds the vocabulary to describe a 3D printer, related sensor, and  observations/events."@en ;
+                                            <http://purl.org/dc/elements/1.1/rights> "Creative Commons Attribution 4.0 International"@en ;
+                                            <http://purl.org/ontology/bibo/status> "Draft"@en ;
+                                            rdfs:label "IIP-Stream"@en ;
+                                            owl:versionInfo "1.0"@en ;
+                                            owl:imports <https://www.w3.org/TR/vocab-ssn/>.
+
+
+
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+
+###  http://purl.org/dc/elements/1.1/Creator
+<http://purl.org/dc/elements/1.1/Creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/Date
+<http://purl.org/dc/elements/1.1/Date> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/Title
+<http://purl.org/dc/elements/1.1/Title> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/abstract
+<http://purl.org/dc/elements/1.1/abstract> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/creator
+<http://purl.org/dc/elements/1.1/creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/description
+<http://purl.org/dc/elements/1.1/description> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/rights
+<http://purl.org/dc/elements/1.1/rights> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/source
+<http://purl.org/dc/elements/1.1/source> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/bibliographicCitation
+<http://purl.org/dc/terms/bibliographicCitation> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/created
+<http://purl.org/dc/terms/created> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/modified
+<http://purl.org/dc/terms/modified> rdf:type owl:AnnotationProperty .
+
+
+
+###  http://purl.org/ontology/bibo/doi
+<http://purl.org/ontology/bibo/doi> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/ontology/bibo/status
+<http://purl.org/ontology/bibo/status> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann#preferredNamespaceUri
+<http://purl.org/vocab/vann#preferredNamespaceUri> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/contributor
+<http://schema.org/contributor> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/domainIncludes
+<http://schema.org/domainIncludes> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/rangeIncludes
+<http://schema.org/rangeIncludes> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2003/06/sw-vocab-status/ns#term_status
+<http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#definition
+<http://www.w3.org/2004/02/skos/core#definition> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#example
+<http://www.w3.org/2004/02/skos/core#example> rdf:type owl:AnnotationProperty .
+
+
+
+#################################################################
+#  Data properties
+#################################################################
+
+
+# Extends platform with modelName, ipAdress, deviceState
+schem:name rdf:type owl:DatatypeProperty ;
+    rdfs:domain sosa:Platform  ;
+    rdfs:range xsd:string .
+
+sieont:ipAddress rdf:type owl:DatatypeProperty ;
+    rdfs:domain sosa:Platform  ;
+    rdfs:range xsd:string .
+
+sieont:deviceState rdf:type owl:DatatypeProperty ;
+    rdfs:domain sosa:Platform  ;
+    rdfs:range xsd:string .
+
+# Extends print observation with a topic 
+sieont:topicName rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:PrintObservation ;
+       rdfs:range xsd:string .
+
+#sieont:derivedFrom rdf:type owl:DatatypeProperty ;
+#       rdfs:domain :PrintObservation ;
+#       rdfs:range xsd:string .
+
+sieont:fileName rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:PrintEvent ;
+       rdfs:range xsd:string .
+
+sieont:owner rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:PrintEvent ;
+       rdfs:range xsd:string .
+
+sieont:user rdf:time owl:DatatypeProperty ;
+       rdfs:domain sieont:PrintEvent ;
+       rdfs:range xsd:string .
+
+sieont:fileName rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:ProgressResult ;
+       rdfs:range xsd:string .
+
+sieont:location rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:ProgressResult ;
+       rdfs:range xsd:string .
+
+sieont:progress rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:ProgressResult ;
+       rdfs:range xsd:string .
+
+sieont:printTimeLeft rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:ProgressResult ;
+       rdfs:range xsd:string .
+
+sieont:location rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:PrintJobEvent ;
+       rdfs:range xsd:string .
+
+sieont:stateId rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:PrinterStateChangedEvent ;
+       rdfs:range xsd:string .
+
+sieont:posX rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:PrinterPositionUpdate .
+       #rdfs:range xsd:decimal .
+
+sieont:posY rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:PrinterPositionUpdate .
+       #rdfs:range xsd:decimal .
+
+sieont:posZ rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:PrinterPositionUpdate .
+       #rdfs:range xsd:decimal .
+
+sieont:posF rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:PrinterPositionUpdate .
+       #rdfs:range xsd:decimal .
+
+# event name only needed for unspecified aux. events
+sieont:eventName rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:PrinterAuxiliaryEvent ;
+       rdfs:range xsd:string .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.siemens.com/iip/ontology#madeStreamObservation
+:madeStreamObservation rdf:type owl:ObjectProperty ;
+                       rdfs:domain sosa:Sensor ;
+                       rdfs:range sieont:StreamObservation ;
+                       rdfs:label "made stream observation"@en .
+
+
+###  http://www.w3.org/ns/sosa/madeBySensor
+<http://www.w3.org/ns/sosa/madeBySensor> rdf:type owl:ObjectProperty .
+
+###  http://www.w3.org/ns/sosa/madeObservation
+<http://www.w3.org/ns/sosa/madeObservation> rdf:type owl:ObjectProperty.
+
+###  http://www.w3.org/ns/sosa/hosts
+<http://www.w3.org/ns/sosa/hosts> rdf:type owl:ObjectProperty.
+
+###  http://www.w3.org/ns/sosa/observes
+<http://www.w3.org/ns/sosa/observes> rdf:type owl:ObjectProperty.
+
+###  http://www.w3.org/ns/ssn/inDeployment
+<http://www.w3.org/ns/ssn/inDeployment> rdf:type owl:ObjectProperty.
+
+#################################################################
+#  Classes
+#################################################################
+
+
+###  http://www.w3.org/ns/sosa/Observation
+<http://www.w3.org/ns/sosa/Observation> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/sosa/Platform
+<http://www.w3.org/ns/sosa/Platform> rdf:type owl:Class .
+
+###  http://www.w3.org/ns/sosa/Sensor
+<http://www.w3.org/ns/sosa/Sensor> rdf:type owl:Class .
+
+
+###  http://www.siemens.com/iip/ontology#StreamObservation
+sieont:StreamObservation rdf:type owl:Class ;
+                   rdfs:subClassOf sosa:Observation ;
+                   rdfs:comment "A streamed observation made by a sensor that is based on raw data such as a sensor measurement."@en ;
+                   rdfs:label "StreamObs ervation" .
+
+sieont:EventObservation rdf:type owl:Class ;
+                   rdfs:subClassOf sosa:Observation ;
+                  rdfs:comment "An event observed by a (artifical) sensor. An event has a start/end and is considered more than raw data."@en ;
+                   rdfs:label "Event Observation" .                  
+
+###  New Platform classes
+
+sieont:EnergyPlatform rdf:type owl:Class ;
+    rdfs:subClassOf sosa:Platform .
+
+sieont:WeightPlatform rdf:type owl:Class ;
+    rdfs:subClassOf sosa:Platform .
+
+sieont:PrintPlatform rdf:type owl:Class ;
+    rdfs:subClassOf sosa:Platform .
+
+###  New Observation Classes
+
+
+sieont:PowerObservation rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:StreamObservation .
+
+sieont:EnergyObservation rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:StreamObservation .
+
+sieont:WeightObservation rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:StreamObservation .
+
+sieont:PrintObservation rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:StreamObservation .
+
+
+sieont:TemperatureObservation rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:PrintObservation .
+
+sieont:TemperatureResult rdf:type owl:Class ;
+                   rdfs:subClassOf  sosa:Result .
+
+sieont:actual rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:TemperatureResult .
+       #rdfs:range xsd:float .  # For debugging
+
+sieont:target rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:TemperatureResult .
+       #rdfs:range xsd:float .  # For debugging
+
+sieont:ProgressObservation rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:PrintObservation .
+
+sieont:ProgressResult rdf:type owl:Class ;
+                   rdfs:subClassOf sosa:Result .
+
+#sieont:PrintDataObservation rdf:type owl:Class ;
+#                   rdfs:subClassOf :PrintObservation .
+
+sieont:basedOn rdf:type owl:ObjectProperty ;
+       rdfs:domain sieont:ComplexEvent ;
+       rdfs:range sieont:PrintEvent .
+
+sieont:eventStart rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:ComplexEvent ;
+       rdfs:range xsd:dateTime .
+
+sieont:eventEnd rdf:type owl:DatatypeProperty ;
+       rdfs:domain sieont:ComplexEvent ;
+       rdfs:range xsd:dateTime .
+
+###  New Event Classes
+
+sieont:PrinterEvent rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:EventObservation .
+
+sieont:PrintEvent rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:EventObservation .
+
+	   
+sieont:PrintStartedEvent rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:PrintEvent .
+
+sieont:PrintDoneEvent rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:PrintEvent .
+
+sieont:PrintFailedEvent rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:PrintEvent .
+
+
+sieont:PrintJobEvent rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:PrintEvent .
+
+
+sieont:PrinterStateChangedEvent rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:PrinterEvent .
+
+sieont:PrinterPositionUpdate rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:PrinterEvent .
+
+sieont:PrinterAuxiliaryEvent rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:PrinterEvent .
+
+sieont:ComplexEvent rdf:type owl:Class ;
+                   rdfs:subClassOf sieont:EventObservation .
+
+sieont:PrintStartEndEvent rdf:type owl:Class ;
+       rdfs:subClassOf sieont:ComplexEvent . 
+
+
+
+#################################################################
+#  Instances
+#################################################################
+
+sieinst:ExampleDeployment-1 rdf:type ssn:Deployment;
+    schem:name "Printer Setup at example workplace".
+
+sieinst:PrusaMiniPlus-1 rdf:type sieont:PrintPlatform;
+    schem:name "PrusaMiniPlus 1" ;
+    sieont:ipAddress "127.0.0.1" ;
+    sieont:deviceState "on" ; # Can be extend with other states
+    ssn:inDeployment sieinst:ExampleDeployment-1 ;
+    sosa:hosts sieinst:PrusaMiniPlus-1-TempSensor, sieinst:PrusaMiniPlus-1-ProgSensor, sieinst:PrusaMiniPlus-1-EventSensor .
+
+sieinst:PrusaMiniPlus-1-TempSensor rdf:type sosa:Sensor;
+    rdfs:label "Temperature of PrusaMiniPlus";
+    sosa:observes sieinst:TemperatureProperty. # Needs to be defined
+
+sieinst:TemperatureProperty rdf:type  ssn:Property.
+
+#sieinst:Observation-1-1 rdf:type sieont:TemperatureObservation;
+#    sosa:madeBySensor sieinst:PrusaMiniPlus-1-TempSensor;
+#    sosa:resultTime "1644685292";
+#    sosa:hasResult [ sieont:actual "10.0"^^xsd:float ; sieont:target "12.0"^^xsd:float  ] .
+
+sieinst:PrusaMiniPlus-1-ProgSensor rdf:type sosa:Sensor;
+    rdfs:label "Progress of PrusaMiniPlus"^^xsd:string;
+    sosa:observes sieinst:ProgressProperty.
+
+sieinst:ProgressProperty rdf:type  ssn:Property.
+
+sieinst:PrusaMiniPlus-1-EventSensor rdf:type sosa:Sensor;
+    rdfs:label "Events of PrusaMiniPlu"^^xsd:string;
+    sosa:observes sieinst:EventsProperty.
+
+sieinst:EventsProperty rdf:type  ssn:Property.
+
+#sieinst:Event-1-1 rdf:type sieont:PrinterStartedEvent;
+#    sosa:madeBySensor sieinst:PrusaMiniPlus-1-EventSensor;
+#    sosa:resultTime "1644685292";
+#    sosa:fileName "file1.gcode" .
+
+#sieinst:Event-1-2 rdf:type sieont:PrinterStoppedEvent;
+#    sosa:madeBySensor sieinst:PrusaMiniPlus-1-EventSensor;
+#    sosa:resultTime "1644685326";
+#    sosa:fileName "file1.gcode" .
+
+sieinst:Siwarex_WL260S_P-S_AA-1 rdf:type sieont:WeightPlatform;
+    schem:name "Siwarex WL260S P-S AA-1"^^xsd:string;
+    sieont:ipAddress "127.0.0.2"^^xsd:string;
+    sieont:deviceState "on"^^xsd:string ;
+    ssn:inDeployment sieinst:ExampleDeployment-1 ;
+    sosa:hosts sieinst:Siwarex-1-WeightSensor .
+
+sieinst:Siwarex-1-WeightSensor rdf:type sosa:Sensor;
+    rdfs:label "Weight of WL260S P-S AA-1"^^xsd:string;
+    sosa:observes sieinst:WeightProperty.
+
+#sieinst:Observation-2-1 rdf:type sieont:WeightObservation;
+#    sosa:madeBySensor sieinst:Siwarex-1-WeightSensor;
+#    sosa:resultTime "1644685326";
+#    sosa:hasSimpleResult "100.0"^^xsd:float  .
+
+sieinst:shellyplug-s-F035B6-kb rdf:type sieont:EnergyPlatform;
+    schem:name "Shellyplug S F035B6"^^xsd:string ;
+    sieont:ipAddress "127.0.0.3"^^xsd:string ;
+    sieont:deviceState "on"^^xsd:string ;
+    ssn:inDeployment sieinst:ExampleDeployment-1 ;
+    sosa:hosts sieinst:shellyplug-1-EnergySensor .
+
+sieinst:shellyplug-1-EnergySensor rdf:type sosa:Sensor;
+    rdfs:label "Sensor of  Shellyplug S F035B6"^^xsd:string;
+    sosa:observes sieinst:EnergyProperty.
+
+#sieinst:Observation-3-1 rdf:type sieont:EnergyObservation;
+#    sosa:madeBySensor sieinst:shellyplug-1-EnergySensor ;
+#    sosa:resultTime "1644685234";
+#    sosa:hasSimpleResult "23.97"^^xsd:float  .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+#[ rdf:type owl:AllDisjointClasses ;
+#  owl:members ( <https://w3id.org/iot/qoi#Artificiality>
+#                <https://w3id.org/iot/qoi#Completeness>
+#                <https://w3id.org/iot/qoi#Concordance>
+#                <https://w3id.org/iot/qoi#Plausibility>
+#                <https://w3id.org/iot/qoi#Timeliness>
+#              )
+#] .
+

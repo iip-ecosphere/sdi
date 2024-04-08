@@ -1,0 +1,55 @@
+    [PrefixDeclaration]
+:		http://www.siemens.com/iip/instance/
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+obda:		https://w3id.org/obda/vocabulary#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+xs: http://www.w3.org/2001/XMLSchema
+foaf:		http://xmlns.com/foaf/0.1/
+sieont: http://www.siemens.com/iip/ontology/
+sieinst: http://www.siemens.com/iip/instance/
+sosa:  http://www.w3.org/ns/sosa/
+
+[MappingDeclaration] @collection [[
+mappingId	public-temp
+target		sieinst:temperature-{id} a sieont:TemperatureObservation; sieont:topicName {subtopic}^^xsd:string ;  sosa:madeBySensor sieinst:PrusaMiniPlus-1-TempSensor ;  sosa:hasResult sieinst:temperature-{id}-bn1 ; sosa:resultTime {ts}^^xsd:dateTime .
+source		SELECT id, subtopic, ts FROM public.octoPrint_temperature
+]]
+
+[MappingDeclaration] @collection [[
+mappingId	public-temp-result
+target		sieinst:temperature-{id}-bn1 a sieont:TemperatureResult; sieont:actual {actual}^^xsd:float; sieont:target {target}^^xsd:float .
+source		SELECT id, cast(msg ->> 'actual' as float) as actual, cast(msg ->> 'target' as float) as target FROM public.octoPrint_temperature where subtopic = 'tool0'
+]]
+
+[MappingDeclaration] @collection [[
+mappingId	public-weight
+target		sieinst:weight-{id} a sieont:WeightObservation ; sieont:topicName "Weight" ;  sosa:madeBySensor sieinst:Siwarex-1-WeightSensor ; sosa:hasSimpleResult {weight_value}^^xsd:float ; sosa:resultTime {ts}^^xsd:dateTime .
+source		SELECT id, device_id, cast(msg ->> 'weight' as float) as weight_value, ts FROM public.weight
+]]
+
+[MappingDeclaration] @collection [[
+mappingId	public-event-print-done
+target		sieinst:event-print-done-{id} a sieont:PrintDoneEvent ; sieont:topicName {subtopic}^^xsd:string ; sosa:resultTime {ts}^^xsd:dateTime; sieont:user {user}^^xsd:string ; sieont:fileName {file_name}^^xsd:string ; sieont:time {time}^^xsd:float ; sosa:madeBySensor sieinst:PrusaMiniPlus-1-EventSensor  .
+source		SELECT id, subtopic, ts, cast(msg ->> 'owner' as text) as user, cast(msg ->> 'name' as text) as file_name, cast(msg ->> 'time' as float) as time  FROM public.octoPrint_event where subtopic = 'PrintDone'
+]]
+
+[MappingDeclaration] @collection [[
+mappingId	public-event-print-started
+target		sieinst:event-print-started-{id} a sieont:PrintStartedEvent ; sieont:topicName {subtopic}^^xsd:string ; sosa:resultTime {ts}^^xsd:dateTime; sieont:user {user}^^xsd:string ; sieont:fileName {file_name}^^xsd:string ; sosa:madeBySensor sieinst:PrusaMiniPlus-1-EventSensor  .
+source		SELECT id, subtopic, ts, cast(msg ->> 'owner' as text) as user, cast(msg ->> 'name' as text) as file_name  FROM public.octoPrint_event where subtopic = 'PrintStarted'
+]]
+
+[MappingDeclaration] @collection [[
+mappingId	public-event-print-failed
+target		sieinst:event-print-failed-{id} a sieont:PrintFailedEvent ; sieont:topicName {subtopic}^^xsd:string ; sosa:resultTime {ts}^^xsd:dateTime; sieont:user {user}^^xsd:string ; sieont:fileName {file_name}^^xsd:string ; sieont:time {time}^^xsd:float ; sosa:madeBySensor sieinst:PrusaMiniPlus-1-EventSensor  .
+source		SELECT id, subtopic, ts, cast(msg ->> 'owner' as text) as user, cast(msg ->> 'name' as text) as file_name, cast(msg ->> 'time' as float) as time  FROM public.octoPrint_event where subtopic = 'PrintFailed'
+]]
+
+[MappingDeclaration] @collection [[
+mappingId	public-complex-event
+target		sieinst:print-start-end-event-{id} a sieont:PrintStartEndEvent ; sieont:basedOn sieinst:event-print-started-{id};  sieont:eventStart {start}^^xsd:dateTime; sieont:eventEnd {end}^^xsd:dateTime .
+source		SELECT DISTINCT E1.id as id, E1.ts as start, (array_agg(E2.ts))[1] as end FROM public.octoPrint_event as E1 LEFT JOIN (SELECT ts FROM public.octoPrint_event WHERE subtopic IN ('PrintDone', 'PrintFailed') ORDER BY ts) E2 ON E1.ts < E2.ts WHERE E1.subtopic IN ('PrintStarted') GROUP BY E1.id
+]]
